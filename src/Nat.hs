@@ -7,10 +7,18 @@ data Nat where
   Zero :: Nat
   Succ :: Nat -> Nat
 
+deriving instance Eq Nat
 
 plus :: Nat -> Nat -> Nat
-plus Zero n = n
-plus (Succ m) n = Succ (m `plus` n)
+plus = go id
+  where
+    go f Zero n = f n
+    go f (Succ m) n = go (Succ . f) m n
+
+minus :: Nat -> Nat -> Nat
+minus x Zero = x
+minus Zero (Succ _) = Zero
+minus (Succ m) (Succ n) = minus m n
 
 toNum :: Num n => Nat -> n
 toNum = go 0

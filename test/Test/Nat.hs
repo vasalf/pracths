@@ -28,19 +28,24 @@ unit_fromIntegral2 =
     Just (Succ (Succ Zero)) -> pure ()
     _ -> assertFailure "Not Two"
 
-
 hprop_toFrom :: Property
 hprop_toFrom = property $ do
   i <- forAll $ G.int (R.linear 0 10000)
   let Just n = Nat.fromIntegral i
   i === Nat.toNum n
 
-
-nat :: Gen Nat
-nat = G.just (Nat.fromIntegral <$> G.int (R.linear 0 100000))
+nat :: R.Range Int -> Gen Nat
+nat r = G.just (Nat.fromIntegral <$> G.int r)
 
 hprop_plus :: Property
 hprop_plus = property $ do
-  m <- forAll nat
-  n <- forAll nat
+  m <- forAll $ nat $ R.linear 0 10000
+  n <- forAll $ nat $ R.linear 0 10000
   Nat.toNum m + Nat.toNum n === (Nat.toNum (m `Nat.plus` n) :: Integer)
+
+hprop_minus :: Property
+hprop_minus = property $ do
+  m <- forAll $ nat $ R.linear 0 10000
+  n <- forAll $ nat $ R.linear 0 10000
+  let res = max 0 $ Nat.toNum m - Nat.toNum n :: Integer
+  res === (Nat.toNum (m `Nat.minus` n) :: Integer)

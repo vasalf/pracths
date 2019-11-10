@@ -22,11 +22,11 @@ default-extensions:
   - MultiParamTypeClasses
 #  - NamedFieldPuns
 #  - OverloadedStrings
-#  - PolyKinds
+  - PolyKinds
 #  - QuantifiedConstraints
 #  - RankNTypes
   - ScopedTypeVariables
-#  - StandaloneDeriving
+  - StandaloneDeriving
 #  - TemplateHaskell
 #  - TupleSections
   - TypeApplications
@@ -50,6 +50,8 @@ ghc-options:
 
 dependencies:
   - base >= 4.7
+  - singletons >= 2.5
+  - ghc-typelits-natnormalise >= 0.6
 
 library:
   source-dirs: src
