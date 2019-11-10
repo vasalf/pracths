@@ -10,6 +10,8 @@ data Vec (n :: Nat) (a :: Type) where
   VNil :: Vec 'Zero a
   VCons :: a -> Vec m a -> Vec ('Succ m) a
 
+deriving instance Eq a => Eq (Vec n a)
+
 vhead :: Vec ('Succ n) a -> a
 vhead (VCons x _) = x
 
@@ -59,3 +61,19 @@ instance Vtake 'Zero m where
 
 instance Vtake n m => Vtake ('Succ n) ('Succ m) where
   vtake (VCons x xs) = VCons x (vtake xs)
+
+
+type family Vtail (n :: Nat) (a :: Type) :: Type where
+  Vtail 'Zero a = Vec 'Zero a
+  Vtail ('Succ n) a = Vec n a
+
+vtail :: Vec n a -> Vtail n a
+vtail VNil = VNil
+vtail (VCons _ xs) = xs
+
+
+type family Minus (m :: Nat) (n :: Nat) :: Nat where
+  Minus n 'Zero = n
+  Minus ('Succ m) ('Succ n) = Minus m n
+  Minus 'Zero n = TypeError
+    ('Text "Not 'Zero >= " ':<>: 'ShowType n)
