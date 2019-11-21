@@ -52,3 +52,14 @@ unit_testFourMinusTwo = do
   let v = VCons 1 $ VCons 2 $ VCons 3 $ VCons (4 :: Int) $ VNil
   let (u :: Vec (Minus Four Two) Int) = vtake @Two v
   (VCons 1 $ VCons 2 $ VNil) @=? u
+
+unit_vec2listEmpty :: Assertion
+unit_vec2listEmpty =
+  [] @=? vec2list (VNil :: Vec 'Zero ())
+
+hprop_vec2listNonEmpty :: Property
+hprop_vec2listNonEmpty = property $ do
+  let genint = G.int R.linearBounded
+  (a, b, c, d) <- forAll $ (,,,) <$> genint <*> genint <*> genint <*> genint
+  let v = VCons a $ VCons b $ VCons c $ VCons d VNil
+  [a, b, c, d] === vec2list v

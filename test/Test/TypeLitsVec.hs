@@ -44,3 +44,14 @@ hprop_vtail = property $ do
   let expected = VCons b $ VCons c $ VCons (d :: Int) VNil
   let toTest = VCons a expected
   expected === vtail toTest
+
+unit_vec2listEmpty :: Assertion
+unit_vec2listEmpty =
+  [] @=? vec2list (VNil :: Vec 0 ())
+
+hprop_vec2listNonEmpty :: Property
+hprop_vec2listNonEmpty = property $ do
+  let genint = G.int R.linearBounded
+  (a, b, c, d) <- forAll $ (,,,) <$> genint <*> genint <*> genint <*> genint
+  let v = VCons a $ VCons b $ VCons c $ VCons d VNil
+  [a, b, c, d] === vec2list v

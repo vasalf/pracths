@@ -45,3 +45,7 @@ instance (1 <= n, (n - 1) <= (m - 1), Vtake (n - 1) (m - 1)) => Vtake n m where
 
 vtail :: (1 <= n) => Vec n a -> Vec (n - 1) a
 vtail (VCons _ xs) = xs
+
+vec2list :: Vec n a -> [a]
+vec2list VNil = []
+vec2list (VCons x xs) = x : vec2list xs

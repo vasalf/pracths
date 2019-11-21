@@ -8,7 +8,7 @@ default-extensions:
   - AllowAmbiguousTypes
 #  - ApplicativeDo
 #  - BangPatterns
-#  - ConstraintKinds
+  - ConstraintKinds
   - DataKinds
 #  - DeriveGeneric
 #  - DerivingStrategies
@@ -45,6 +45,7 @@ ghc-options:
   - -Wpartial-fields
   - -Wredundant-constraints
   - -Wcpp-undef
+  - -fplugin GHC.TypeLits.Normalise 
 #  - -Wmissing-export-lists
 #  - -Wmonomorphism-restriction
 
