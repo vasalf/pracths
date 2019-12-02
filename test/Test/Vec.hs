@@ -63,3 +63,28 @@ hprop_vec2listNonEmpty = property $ do
   (a, b, c, d) <- forAll $ (,,,) <$> genint <*> genint <*> genint <*> genint
   let v = VCons a $ VCons b $ VCons c $ VCons d VNil
   [a, b, c, d] === vec2list v
+
+unit_list2vecZeroEmpty :: Assertion
+unit_list2vecZeroEmpty =
+  Just VNil @=? list2vec @'Zero ([] :: [Int])
+ 
+unit_list2vecZeroNotEmpty :: Assertion
+unit_list2vecZeroNotEmpty =
+  Nothing @=? list2vec @'Zero [(1 :: Int), 7, 9]
+
+unit_list2vecThreeEmpty :: Assertion
+unit_list2vecThreeEmpty =
+  Nothing @=? list2vec @Three ([] :: [Int])
+
+hprop_list2vecThreeThree :: Property
+hprop_list2vecThreeThree = property $ do
+  let genint = G.int R.linearBounded
+  (a, b, c) <- forAll $ (,,) <$> genint <*> genint <*> genint
+  let v = VCons a $ VCons b $ VCons c VNil
+  Just v === list2vec @Three [a, b, c]
+
+hprop_list2vecThreeFour :: Property
+hprop_list2vecThreeFour = property $ do
+  let genint = G.int R.linearBounded
+  (a, b, c, d) <- forAll $ (,,,) <$> genint <*> genint <*> genint <*> genint
+  Nothing === list2vec @Three [a, b, c, d]

@@ -10,21 +10,26 @@ default-extensions:
 #  - BangPatterns
   - ConstraintKinds
   - DataKinds
-#  - DeriveGeneric
-#  - DerivingStrategies
-#  - DerivingVia
+  - DefaultSignatures
+  - DeriveAnyClass
+  - DeriveGeneric
+  - DerivingStrategies
+  - DerivingVia
+  - ExistentialQuantification
   - FlexibleContexts
   - FlexibleInstances
   - GADTs
-#  - GeneralizedNewtypeDeriving
+  - GeneralizedNewtypeDeriving
   - KindSignatures
 #  - LambdaCase
   - MultiParamTypeClasses
-#  - NamedFieldPuns
-#  - OverloadedStrings
+  - NamedFieldPuns
+  - OverloadedLabels
+  - OverloadedStrings
+  - PartialTypeSignatures
   - PolyKinds
 #  - QuantifiedConstraints
-#  - RankNTypes
+  - RankNTypes
   - ScopedTypeVariables
   - StandaloneDeriving
 #  - TemplateHaskell
@@ -53,10 +58,42 @@ dependencies:
   - base >= 4.7
   - singletons >= 2.5
   - ghc-typelits-natnormalise >= 0.6
+  - containers >= 0.6
 
 library:
   source-dirs: src
-  dependencies: []
+  dependencies:
+    - aeson
+    - http-client
+    - http-client-tls
+    - mtl
+    - servant
+    - servant-client
+    - servant-server
+
+executables:
+  dsl:
+    main: Main.hs
+    source-dirs: apps/dsl
+    dependencies:
+      - pracths
+
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+
+  web:
+    main: Main.hs
+    source-dirs: apps/web
+    dependencies:
+      - pracths
+      - warp
+
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
 
 tests:
   pracths-test:
@@ -75,4 +112,3 @@ tests:
       - -threaded
       - -rtsopts
       - -with-rtsopts=-N
-

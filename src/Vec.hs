@@ -76,3 +76,14 @@ type family Minus (m :: Nat) (n :: Nat) :: Nat where
 vec2list :: Vec n a -> [a]
 vec2list VNil = []
 vec2list (VCons x xs) = x : (vec2list xs)
+
+class List2vec (n :: Nat) where
+  list2vec :: forall a. [a] -> Maybe (Vec n a)
+
+instance List2vec 'Zero where
+  list2vec [] = Just VNil
+  list2vec _  = Nothing
+
+instance List2vec n => List2vec ('Succ n) where
+  list2vec []     = Nothing
+  list2vec (x:xs) = VCons x <$> list2vec @n xs
